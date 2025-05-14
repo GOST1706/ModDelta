@@ -44,7 +44,6 @@
       box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
     }
 
-    /* Estilos del modal */
     .overlay {
       position: fixed;
       top: 0;
@@ -58,16 +57,17 @@
       z-index: 999;
     }
 
+    .overlay.active {
+      display: flex;
+    }
+
     .overlay img {
       max-width: 90%;
       max-height: 90%;
       border-radius: 16px;
       box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
-      transition: transform 0.3s;
-    }
-
-    .overlay.active {
-      display: flex;
+      transition: opacity 0.4s ease;
+      opacity: 1;
     }
   </style>
 </head>
@@ -76,29 +76,78 @@
     <h1>Modulación Delta en Controladores Industriales</h1>
   </header>
 
-  <div class="slides-container">
-    <img src="https://i.supaimg.com/6e0e7564-3036-46c3-a3d9-9c47a8296221.jpg" alt="Slide 1" class="slide-img" onclick="showInCenter(this.src)" />
-    <img src="https://i.supaimg.com/39d662af-171d-48c2-aff3-bfed28d9319d.jpg" alt="Slide 2" class="slide-img" onclick="showInCenter(this.src)" />
-    <img src="https://i.supaimg.com/9d10933e-bd0f-4b6d-968c-e26d0556f1eb.jpg" alt="Slide 3" class="slide-img" onclick="showInCenter(this.src)" />
-    <img src="https://i.supaimg.com/b68fb017-2921-46c2-a2b0-ee088af3694d.jpg" alt="Slide 4" class="slide-img" onclick="showInCenter(this.src)" />
-  </div>
+  <div class="slides-container" id="slides"></div>
 
-  <!-- Modal para centrar imagen -->
   <div class="overlay" id="overlay" onclick="closeOverlay()">
     <img id="overlay-img" src="" alt="Imagen ampliada" />
   </div>
 
   <script>
-    function showInCenter(src) {
-      const overlay = document.getElementById("overlay");
-      const overlayImg = document.getElementById("overlay-img");
-      overlayImg.src = src;
+    const imageUrls = [
+      "https://i.supaimg.com/6e0e7564-3036-46c3-a3d9-9c47a8296221.jpg",
+      "https://i.supaimg.com/39d662af-171d-48c2-aff3-bfed28d9319d.jpg",
+      "https://i.supaimg.com/9d10933e-bd0f-4b6d-968c-e26d0556f1eb.jpg",
+      "https://i.supaimg.com/b68fb017-2921-46c2-a2b0-ee088af3694d.jpg"
+    ];
+
+    let currentIndex = 0;
+
+    const slidesContainer = document.getElementById("slides");
+    const overlay = document.getElementById("overlay");
+    const overlayImg = document.getElementById("overlay-img");
+
+    // Crear las imágenes dinámicamente
+    imageUrls.forEach((url, index) => {
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = `Slide ${index + 1}`;
+      img.className = "slide-img";
+      img.onclick = () => showInCenter(index);
+      slidesContainer.appendChild(img);
+    });
+
+    function showInCenter(index) {
+      currentIndex = index;
+      overlayImg.src = imageUrls[currentIndex];
+      overlayImg.style.opacity = 1;
       overlay.classList.add("active");
     }
 
     function closeOverlay() {
-      document.getElementById("overlay").classList.remove("active");
+      overlay.classList.remove("active");
     }
+
+    function changeImage(index) {
+      overlayImg.style.opacity = 0;
+      setTimeout(() => {
+        overlayImg.src = imageUrls[index];
+        overlayImg.onload = () => {
+          overlayImg.style.opacity = 1;
+        };
+      }, 200);
+    }
+
+    function nextImage() {
+      if (currentIndex < imageUrls.length - 1) {
+        currentIndex++;
+        changeImage(currentIndex);
+      }
+    }
+
+    function prevImage() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        changeImage(currentIndex);
+      }
+    }
+
+    document.addEventListener("keydown", function(e) {
+      if (!overlay.classList.contains("active")) return;
+
+      if (e.key === "ArrowRight") nextImage();
+      else if (e.key === "ArrowLeft") prevImage();
+      else if (e.key === "Escape") closeOverlay();
+    });
   </script>
 </body>
 </html>
