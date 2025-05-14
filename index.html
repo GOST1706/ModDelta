@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modulación Delta en Controladores Industriales</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0f172a;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #e0f2fe;
+    }
+    header {
+      background-color: #1e293b;
+      color: #38bdf8;
+      padding: 1.5rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+    .slides-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      flex-wrap: wrap;
+    }
+    .slide-img {
+      width: 23%;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .slide-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Estilos del modal */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+      transition: transform 0.3s;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Modulación Delta en Controladores Industriales</h1>
+  </header>
+
+  <div class="slides-container">
+    <img src="https://i.supaimg.com/6e0e7564-3036-46c3-a3d9-9c47a8296221.jpg" alt="Slide 1" class="slide-img" onclick="showInCenter(this.src)" />
+    <img src="https://i.supaimg.com/39d662af-171d-48c2-aff3-bfed28d9319d.jpg" alt="Slide 2" class="slide-img" onclick="showInCenter(this.src)" />
+    <img src="https://i.supaimg.com/9d10933e-bd0f-4b6d-968c-e26d0556f1eb.jpg" alt="Slide 3" class="slide-img" onclick="showInCenter(this.src)" />
+    <img src="https://i.supaimg.com/b68fb017-2921-46c2-a2b0-ee088af3694d.jpg" alt="Slide 4" class="slide-img" onclick="showInCenter(this.src)" />
+  </div>
+
+  <!-- Modal para centrar imagen -->
+  <div class="overlay" id="overlay" onclick="closeOverlay()">
+    <img id="overlay-img" src="" alt="Imagen ampliada" />
+  </div>
+
+  <script>
+    function showInCenter(src) {
+      const overlay = document.getElementById("overlay");
+      const overlayImg = document.getElementById("overlay-img");
+      overlayImg.src = src;
+      overlay.classList.add("active");
+    }
+
+    function closeOverlay() {
+      document.getElementById("overlay").classList.remove("active");
+    }
+  </script>
+</body>
+</html>
